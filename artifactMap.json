@@ -1,0 +1,58 @@
+{
+  "artifact": {
+    "effectTypes": {
+      "main": {
+        "100": "HP flat",
+        "101": "ATK flat",
+        "102": "DEF flat"
+      },
+      "sub": {
+        "200":  "ATK Increased Proportional to Lost HP",
+        "201":  "DEF Increased Proportional to Lost HP",
+        "202":  "SPD Increased Proportional to Lost HP",
+        "203":  "SPD Under Inability Effects",
+        "204":  "ATK Increasing Effect",
+        "205":  "DEF Increasing Effect",
+        "206":  "SPD Increasing Effect",
+        "207":  "Crit Rate Increasing Effect",
+        "208":  "Damage Dealt by Counterattack",
+        "209":  "Damage Dealt by Attacking Together",
+        "210":  "Bomb Damage",
+        "211":  "Damage Dealt by Reflected DMG",
+        "212":  "Crushing Hit DMG",
+        "213":  "Damage Received Under Inability Effect",
+        "214":  "Received Crit DMG",
+        "215":  "Life Drain",
+        "216":  "HP when Revived",
+        "217":  "Attack Bar when Revived",
+        "218":  "Additional Damage by % of HP",
+        "219":  "Additional Damage by % of ATK",
+        "220":  "Additional Damage by % of DEF",
+        "221":  "Additional Damage by % of SPD",
+        "300":  "Damage Dealt on Fire",
+        "301":  "Damage Dealt on Water",
+        "302":  "Damage Dealt on Wind",
+        "303":  "Damage Dealt on Light",
+        "304":  "Damage Dealt on Dark",
+        "305":  "Damage Received from Fire",
+        "306":  "Damage Received from Water",
+        "307":  "Damage Received from Wind",
+        "308":  "Damage Received from Light",
+        "309":  "Damage Received from Dark",
+        "400":  "Skill 1 CRIT DMG",
+        "401":  "Skill 2 CRIT DMG",
+        "402":  "Skill 3 CRIT DMG",
+        "403":  "Skill 4 CRIT DMG",
+        "404":  "Skill 1 Recovery",
+        "405":  "Skill 2 Recovery",
+        "406":  "Skill 3 Recovery",
+        "407":  "Skill 1 Accuracy",
+        "408":  "Skill 2 Accuracy",
+        "409":  "Skill 3 Accuracy"
+      },
+      "attrArtiSubs": {
+
+      }
+    }
+  }
+}
