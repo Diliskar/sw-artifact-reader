@@ -3,7 +3,6 @@ import json
 import pickle
 import os.path
 
-import googleapiclient
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
@@ -59,9 +58,16 @@ def main():
         artiMap = json.load(artiJson)
 
     # Unique Ids
-    uniqueId_txt = open(r"uniqueIds.txt", "r+")
-    unique_ids = uniqueId_txt.read().split("\n")
-    uniqueId_txt.close()
+    try:
+        uniqueId_txt = open(r"uniqueIds.txt", "r+")
+        unique_ids = uniqueId_txt.read().split("\n")
+        uniqueId_txt.close()
+    except FileNotFoundError:
+        uniqueId_txt = open(r"uniqueIds.txt", "w+")
+        uniqueId_txt.close()
+        uniqueId_txt = open(r"uniqueIds.txt", "r+")
+        unique_ids = uniqueId_txt.read().split("\n")
+        uniqueId_txt.close()
 
     values = []
 
@@ -252,12 +258,18 @@ def setupsheet():
 
     if text == "0":
         setup = open(r"setup.txt", "w+")
-        setup.write("1")
+        setup.write("2")
         setup.close()
+        print('~~~ First time sheet setup ~~~')
+    elif text == "1":
+        setup = open(r"setup.txt", "w+")
+        setup.write("2")
+        setup.close()
+        print('~~~ Updating Sheet Layout ~~~')
     else:
         return
 
-    print('~~~ First time sheet setup ~~~')
+
 
     # Writes Header row
     values = [
@@ -394,9 +406,6 @@ def setupsheet():
             "userEnteredValue": "SPD Increased Proportional to Lost HP"
         },
         {
-            "userEnteredValue": "SPD Under Inability Effects"
-        },
-        {
             "userEnteredValue": "ATK Increasing Effect"
         },
         {
@@ -406,9 +415,6 @@ def setupsheet():
             "userEnteredValue": "SPD Increasing Effect"
         },
         {
-            "userEnteredValue": "Crit Rate Increasing Effect"
-        },
-        {
             "userEnteredValue": "Damage Dealt by Counterattack"
         },
         {
@@ -416,15 +422,6 @@ def setupsheet():
         },
         {
             "userEnteredValue": "Bomb Damage"
-        },
-        {
-            "userEnteredValue": "Damage Dealt by Reflected DMG"
-        },
-        {
-            "userEnteredValue": "Crushing Hit DMG"
-        },
-        {
-            "userEnteredValue": "Damage Received Under Inability Effect"
         },
         {
             "userEnteredValue": "Received Crit DMG"
@@ -492,9 +489,6 @@ def setupsheet():
             "userEnteredValue": "SPD Increased Proportional to Lost HP"
         },
         {
-            "userEnteredValue": "SPD Under Inability Effects"
-        },
-        {
             "userEnteredValue": "ATK Increasing Effect"
         },
         {
@@ -504,9 +498,6 @@ def setupsheet():
             "userEnteredValue": "SPD Increasing Effect"
         },
         {
-            "userEnteredValue": "Crit Rate Increasing Effect"
-        },
-        {
             "userEnteredValue": "Damage Dealt by Counterattack"
         },
         {
@@ -514,15 +505,6 @@ def setupsheet():
         },
         {
             "userEnteredValue": "Bomb Damage"
-        },
-        {
-            "userEnteredValue": "Damage Dealt by Reflected DMG"
-        },
-        {
-            "userEnteredValue": "Crushing Hit DMG"
-        },
-        {
-            "userEnteredValue": "Damage Received Under Inability Effect"
         },
         {
             "userEnteredValue": "Received Crit DMG"
@@ -650,6 +632,9 @@ def setupsheet():
     }
 
     results = service.spreadsheets().batchUpdate(spreadsheetId=spreadsheet_id, body=body).execute()
+
+    if text == "1":
+        return
 
     # Add conditional formatting
 
@@ -872,7 +857,10 @@ def setupsheet():
 
     results = service.spreadsheets().batchUpdate(spreadsheetId=spreadsheet_id, body=body).execute()
 
-    print('~~~ First time setup completed ~~~ \n')
+    if text == "0":
+        print('~~~ First time setup completed ~~~ \n')
+    else:
+        print('~~~ Layout update completed ~~~ \n')
 
 
 if __name__ == '__main__':
