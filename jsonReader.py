@@ -887,7 +887,7 @@ def failsafe():
     # function checks whether the json is sorted or not
     # if sorted -> exit script and print warning
 
-    print("~~~ Checking if JSON is valid ~~~\n")
+    print("~~~ Checking if JSON is valid ~~~")
 
     with open(f"{json_location}", "rb") as jsonFile:
         jsonData = json.load(jsonFile)
@@ -913,11 +913,11 @@ def failsafe():
         except IndexError:
             None
 
-    print("~~~ JSON is valid ~~~")
+    print("~~~ JSON is valid ~~~\n")
 
 def createBackup():
 
-    print("~~~ Creating backup sheet ~~~")
+    print("\n~~~ Creating backup sheet ~~~")
 
 
     # Delete request
@@ -959,7 +959,7 @@ def createBackup():
         spreadsheetId=spreadsheet_id, body=body
     ).execute()
 
-    print("~~~ Backup created ~~~")
+    print("~~~ Backup created ~~~\n")
 
 
 if __name__ == '__main__':
