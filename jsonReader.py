@@ -880,8 +880,43 @@ def setupsheet():
     else:
         print('~~~ Layout update completed ~~~ \n')
 
+def failsafe():
+
+    # function checks whether the json is sorted or not
+    # if sorted -> exit script and print warning
+
+    print("~~ Checking if JSON is valid ~~\n")
+
+    with open(f"{json_location}", "rb") as jsonFile:
+        jsonData = json.load(jsonFile)
+
+    dates = []
+
+    for unit in range(len(jsonData['unit_list'])):
+
+        mon = jsonData['unit_list'][unit]
+        date = mon["create_time"]
+
+        if mon['class'] == 6:
+            dates.append(date)
+
+    for i in range(len(dates)):
+        try:
+            if dates[i] < dates[i+1]:
+                None
+            else:
+                print("Invalid JSON. Please select a unsorted JSON.\nSort data like ingame has to be turned off or use"
+                      " the second profile export plugin. \nStopping script.")
+                exit()
+        except IndexError:
+            None
+
+    print("~~ JSON is valid ~~")
+
 
 if __name__ == '__main__':
+
+    failsafe()
 
     setupsheet()
 
