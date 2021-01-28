@@ -3,9 +3,11 @@ import json
 import pickle
 import os.path
 
+import googleapiclient
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
+from googleapiclient import discovery
 
 import usersettings
 
@@ -885,7 +887,7 @@ def failsafe():
     # function checks whether the json is sorted or not
     # if sorted -> exit script and print warning
 
-    print("~~ Checking if JSON is valid ~~\n")
+    print("~~~ Checking if JSON is valid ~~~\n")
 
     with open(f"{json_location}", "rb") as jsonFile:
         jsonData = json.load(jsonFile)
@@ -911,7 +913,53 @@ def failsafe():
         except IndexError:
             None
 
-    print("~~ JSON is valid ~~")
+    print("~~~ JSON is valid ~~~")
+
+def createBackup():
+
+    print("~~~ Creating backup sheet ~~~")
+
+
+    # Delete request
+    requests = [
+        {
+            'deleteSheet': {
+                "sheetId": sheet_id+1
+            }
+        }
+    ]
+    body = {
+        'requests': requests
+    }
+
+    try:
+        response = service.spreadsheets().batchUpdate(
+            spreadsheetId=spreadsheet_id, body=body
+        ).execute()
+    except googleapiclient.errors.HttpError:
+        None
+
+
+    # Duplicate request
+    requests = [
+        {
+            'duplicateSheet': {
+                'sourceSheetId': sheet_id,
+                "insertSheetIndex": 1,
+                "newSheetId": sheet_id+1,
+                "newSheetName": "Backup-Sheet"
+            }
+        }
+    ]
+    body = {
+        'requests': requests
+    }
+
+    response = service.spreadsheets().batchUpdate(
+        spreadsheetId=spreadsheet_id, body=body
+    ).execute()
+
+    print("~~~ Backup created ~~~")
 
 
 if __name__ == '__main__':
@@ -919,6 +967,8 @@ if __name__ == '__main__':
     failsafe()
 
     setupsheet()
+
+    createBackup()
 
     print('~~~ Updating Sheet ~~~')
     main()
