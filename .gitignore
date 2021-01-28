@@ -2,3 +2,6 @@
 venv
 credentials.json
 token.pickle
+usersettings.py
+uniqueIds.txt
+setup.txt

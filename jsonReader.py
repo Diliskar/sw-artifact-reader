@@ -7,6 +7,7 @@ import googleapiclient
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
+from googleapiclient import discovery
 
 import usersettings
 
@@ -59,9 +60,16 @@ def main():
         artiMap = json.load(artiJson)
 
     # Unique Ids
-    uniqueId_txt = open(r"uniqueIds.txt", "r+")
-    unique_ids = uniqueId_txt.read().split("\n")
-    uniqueId_txt.close()
+    try:
+        uniqueId_txt = open(r"uniqueIds.txt", "r+")
+        unique_ids = uniqueId_txt.read().split("\n")
+        uniqueId_txt.close()
+    except FileNotFoundError:
+        uniqueId_txt = open(r"uniqueIds.txt", "w+")
+        uniqueId_txt.close()
+        uniqueId_txt = open(r"uniqueIds.txt", "r+")
+        unique_ids = uniqueId_txt.read().split("\n")
+        uniqueId_txt.close()
 
     values = []
 
@@ -252,12 +260,18 @@ def setupsheet():
 
     if text == "0":
         setup = open(r"setup.txt", "w+")
-        setup.write("1")
+        setup.write("2")
         setup.close()
+        print('~~~ First time sheet setup ~~~')
+    elif text == "1":
+        setup = open(r"setup.txt", "w+")
+        setup.write("2")
+        setup.close()
+        print('~~~ Updating Sheet Layout ~~~')
     else:
         return
 
-    print('~~~ First time sheet setup ~~~')
+
 
     # Writes Header row
     values = [
@@ -394,9 +408,6 @@ def setupsheet():
             "userEnteredValue": "SPD Increased Proportional to Lost HP"
         },
         {
-            "userEnteredValue": "SPD Under Inability Effects"
-        },
-        {
             "userEnteredValue": "ATK Increasing Effect"
         },
         {
@@ -406,9 +417,6 @@ def setupsheet():
             "userEnteredValue": "SPD Increasing Effect"
         },
         {
-            "userEnteredValue": "Crit Rate Increasing Effect"
-        },
-        {
             "userEnteredValue": "Damage Dealt by Counterattack"
         },
         {
@@ -416,15 +424,6 @@ def setupsheet():
         },
         {
             "userEnteredValue": "Bomb Damage"
-        },
-        {
-            "userEnteredValue": "Damage Dealt by Reflected DMG"
-        },
-        {
-            "userEnteredValue": "Crushing Hit DMG"
-        },
-        {
-            "userEnteredValue": "Damage Received Under Inability Effect"
         },
         {
             "userEnteredValue": "Received Crit DMG"
@@ -449,6 +448,15 @@ def setupsheet():
         },
         {
             "userEnteredValue": "Additional Damage by % of SPD"
+        },
+        {
+            "userEnteredValue": "Single-target skill Crit DMG on your Turn"
+        },
+        {
+            "userEnteredValue": "Crit DMG+ up to x% as the enemies HP condition is bad"
+        },
+        {
+            "userEnteredValue": "Crit DMG+ up to x% as the enemies HP condition is good"
         },
         {
             "userEnteredValue": "Damage Dealt on Fire"
@@ -492,9 +500,6 @@ def setupsheet():
             "userEnteredValue": "SPD Increased Proportional to Lost HP"
         },
         {
-            "userEnteredValue": "SPD Under Inability Effects"
-        },
-        {
             "userEnteredValue": "ATK Increasing Effect"
         },
         {
@@ -504,9 +509,6 @@ def setupsheet():
             "userEnteredValue": "SPD Increasing Effect"
         },
         {
-            "userEnteredValue": "Crit Rate Increasing Effect"
-        },
-        {
             "userEnteredValue": "Damage Dealt by Counterattack"
         },
         {
@@ -514,15 +516,6 @@ def setupsheet():
         },
         {
             "userEnteredValue": "Bomb Damage"
-        },
-        {
-            "userEnteredValue": "Damage Dealt by Reflected DMG"
-        },
-        {
-            "userEnteredValue": "Crushing Hit DMG"
-        },
-        {
-            "userEnteredValue": "Damage Received Under Inability Effect"
         },
         {
             "userEnteredValue": "Received Crit DMG"
@@ -547,6 +540,15 @@ def setupsheet():
         },
         {
             "userEnteredValue": "Additional Damage by % of SPD"
+        },
+        {
+            "userEnteredValue": "Single-target skill Crit DMG on your Turn"
+        },
+        {
+            "userEnteredValue": "Crit DMG+ up to x% as the enemies HP condition is bad"
+        },
+        {
+            "userEnteredValue": "Crit DMG+ up to x% as the enemies HP condition is good"
         },
         {
             "userEnteredValue": "Skill 1 CRIT DMG"
@@ -650,6 +652,9 @@ def setupsheet():
     }
 
     results = service.spreadsheets().batchUpdate(spreadsheetId=spreadsheet_id, body=body).execute()
+
+    if text == "1":
+        return
 
     # Add conditional formatting
 
@@ -872,12 +877,98 @@ def setupsheet():
 
     results = service.spreadsheets().batchUpdate(spreadsheetId=spreadsheet_id, body=body).execute()
 
-    print('~~~ First time setup completed ~~~ \n')
+    if text == "0":
+        print('~~~ First time setup completed ~~~ \n')
+    else:
+        print('~~~ Layout update completed ~~~ \n')
+
+def failsafe():
+
+    # function checks whether the json is sorted or not
+    # if sorted -> exit script and print warning
+
+    print("~~~ Checking if JSON is valid ~~~\n")
+
+    with open(f"{json_location}", "rb") as jsonFile:
+        jsonData = json.load(jsonFile)
+
+    dates = []
+
+    for unit in range(len(jsonData['unit_list'])):
+
+        mon = jsonData['unit_list'][unit]
+        date = mon["create_time"]
+
+        if mon['class'] == 6:
+            dates.append(date)
+
+    for i in range(len(dates)):
+        try:
+            if dates[i] < dates[i+1]:
+                None
+            else:
+                print("Invalid JSON. Please select a unsorted JSON.\nSort data like ingame has to be turned off or use"
+                      " the second profile export plugin. \nStopping script.")
+                exit()
+        except IndexError:
+            None
+
+    print("~~~ JSON is valid ~~~")
+
+def createBackup():
+
+    print("~~~ Creating backup sheet ~~~")
+
+
+    # Delete request
+    requests = [
+        {
+            'deleteSheet': {
+                "sheetId": sheet_id+1
+            }
+        }
+    ]
+    body = {
+        'requests': requests
+    }
+
+    try:
+        response = service.spreadsheets().batchUpdate(
+            spreadsheetId=spreadsheet_id, body=body
+        ).execute()
+    except googleapiclient.errors.HttpError:
+        None
+
+
+    # Duplicate request
+    requests = [
+        {
+            'duplicateSheet': {
+                'sourceSheetId': sheet_id,
+                "insertSheetIndex": 1,
+                "newSheetId": sheet_id+1,
+                "newSheetName": "Backup-Sheet"
+            }
+        }
+    ]
+    body = {
+        'requests': requests
+    }
+
+    response = service.spreadsheets().batchUpdate(
+        spreadsheetId=spreadsheet_id, body=body
+    ).execute()
+
+    print("~~~ Backup created ~~~")
 
 
 if __name__ == '__main__':
 
+    failsafe()
+
     setupsheet()
+
+    createBackup()
 
     print('~~~ Updating Sheet ~~~')
     main()
