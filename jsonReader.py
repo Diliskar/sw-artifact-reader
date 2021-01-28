@@ -448,6 +448,15 @@ def setupsheet():
             "userEnteredValue": "Additional Damage by % of SPD"
         },
         {
+            "userEnteredValue": "Single-target skill Crit DMG on your Turn"
+        },
+        {
+            "userEnteredValue": "Crit DMG+ up to x% as the enemies HP condition is bad"
+        },
+        {
+            "userEnteredValue": "Crit DMG+ up to x% as the enemies HP condition is good"
+        },
+        {
             "userEnteredValue": "Damage Dealt on Fire"
         },
         {
@@ -529,6 +538,15 @@ def setupsheet():
         },
         {
             "userEnteredValue": "Additional Damage by % of SPD"
+        },
+        {
+            "userEnteredValue": "Single-target skill Crit DMG on your Turn"
+        },
+        {
+            "userEnteredValue": "Crit DMG+ up to x% as the enemies HP condition is bad"
+        },
+        {
+            "userEnteredValue": "Crit DMG+ up to x% as the enemies HP condition is good"
         },
         {
             "userEnteredValue": "Skill 1 CRIT DMG"
