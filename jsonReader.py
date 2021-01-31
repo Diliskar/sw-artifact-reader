@@ -73,6 +73,7 @@ def main():
 
     values = []
 
+    # Gets len of row A
     result = service.spreadsheets().values().get(
         spreadsheetId=spreadsheet_id, range=sheet_name + "!A:A").execute()
     rows = result.get('values', [])
@@ -157,6 +158,7 @@ def main():
 
             mon = jsonData['unit_list'][unit]
             artifacts = mon['artifacts']
+            date = mon["create_time"]
 
             artifact1 = None
             artifact2 = None
@@ -192,8 +194,16 @@ def main():
 
             # Appends the main artifact stats to values
 
-            values.append([artifact1, artifact2])
-            values2.append([art1sub1, art1sub2, art1sub3, art1sub4, art2sub1, art2sub2, art2sub3, art2sub4])
+            values.append([artifact1, artifact2, date])
+            values2.append([art1sub1, art1sub2, art1sub3, art1sub4, art2sub1, art2sub2, art2sub3, art2sub4, date])
+            values.sort(key=lambda x: x[2])
+            values2.sort(key=lambda x: x[8])
+
+    for i in range(len(values)):
+        values[i].pop(2)
+
+    for i in range(len(values2)):
+        values2[i].pop(8)
 
     data = [
         {
@@ -882,42 +892,78 @@ def setupsheet():
     else:
         print('~~~ Layout update completed ~~~ \n')
 
-def failsafe():
+# def failsafe():
+#
+#     # function checks whether the json is sorted or not
+#     # if sorted -> exit script and print warning
+#
+#     print("~~~ Checking if JSON is valid ~~~")
+#
+#     dates = []
+#
+#     with open(f"{json_location}", "rb") as jsonFile:
+#         jsonData = json.load(jsonFile)
+#
+#
+#     for unit in range(len(jsonData['unit_list'])):
+#
+#         mon = jsonData['unit_list'][unit]
+#         date = mon["create_time"]
+#
+#         if mon['class'] == 6:
+#             dates.append(date)
+#
+#     jsonFile.close()
+#
+#     for i in range(len(dates)):
+#         try:
+#             if dates[i] < dates[i+1]:
+#                 None
+#             else:
+#                 print("Invalid JSON. Please select a unsorted JSON.\nSort data like ingame has to be turned off or use"
+#                       " the second profile export plugin. \nStopping script.")
+#                 exit()
+#         except IndexError:
+#             None
+#
+#     print("~~~ JSON is valid ~~~\n")
 
-    # function checks whether the json is sorted or not
-    # if sorted -> exit script and print warning
+# def unsortJson():
+#
+#     dates = []
+#
+#     # JSON
+#     with open(f"{json_location}", "rb") as jsonFile:
+#         jsonData = json.load(jsonFile)
+#
+#     # Mon / Stat IDs
+#     with open('mapping.json', "rb") as mapJson:
+#         mapper = json.load(mapJson)
+#
+#     for unit in range(len(jsonData['unit_list'])):
+#
+#         mon = jsonData['unit_list'][unit]
+#         date = mon['create_time']
+#         com2us_id = mon['unit_master_id']
+#         name = mapper[str(com2us_id)]['name']
+#         element = mapper[str(com2us_id)]['element']
+#         archetype = mapper[str(com2us_id)]['archetype']
+#
+#         if mon['class'] == 6:
+#
+#             dates.append([name, date, element, archetype])
+#             dates.sort(key=lambda x: x[1])
+#
+#
+#     jsonFile.close()
+#     mapJson.close()
+#
+#     print(dates)
 
-    print("~~~ Checking if JSON is valid ~~~\n")
-
-    with open(f"{json_location}", "rb") as jsonFile:
-        jsonData = json.load(jsonFile)
-
-    dates = []
-
-    for unit in range(len(jsonData['unit_list'])):
-
-        mon = jsonData['unit_list'][unit]
-        date = mon["create_time"]
-
-        if mon['class'] == 6:
-            dates.append(date)
-
-    for i in range(len(dates)):
-        try:
-            if dates[i] < dates[i+1]:
-                None
-            else:
-                print("Invalid JSON. Please select a unsorted JSON.\nSort data like ingame has to be turned off or use"
-                      " the second profile export plugin. \nStopping script.")
-                exit()
-        except IndexError:
-            None
-
-    print("~~~ JSON is valid ~~~")
 
 def createBackup():
 
-    print("~~~ Creating backup sheet ~~~")
+    print("~~~ Creating backup sheet ~~~\n")
 
 
     # Delete request
@@ -959,12 +1005,10 @@ def createBackup():
         spreadsheetId=spreadsheet_id, body=body
     ).execute()
 
-    print("~~~ Backup created ~~~")
-
 
 if __name__ == '__main__':
 
-    failsafe()
+    # failsafe()
 
     setupsheet()
 
