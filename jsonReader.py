@@ -227,6 +227,16 @@ def main():
 
     # add data validation
 
+    # refresh checkboxes
+
+    checkbox_range = {
+        'sheetId': sheet_id,
+        'startRowIndex': 1,
+        'endRowIndex': 999,
+        'startColumnIndex': 7,
+        'endColumnIndex': 8
+    }
+
     # Sorts after Column C (Element)
 
     requests = [
@@ -245,6 +255,29 @@ def main():
                         "sortOrder": "DESCENDING"
                     }
                 ]
+            }
+        },
+        # Checkbox Formula
+        {
+            'repeatCell': {
+                'range': checkbox_range,
+                'cell': {
+                    'userEnteredValue': {
+                        'formulaValue': '=IF(NOT(ISNA(AND(AND(HLOOKUP(I2,N2:Q2,1,False)=I2, HLOOKUP(J2,N2:Q2,1,False)=J2)=TRUE,AND(HLOOKUP(K2,R2:U2,1,False)=K2, HLOOKUP(L2,R2:U2,1,False)=L2)=TRUE)=TRUE)), TRUE,FALSE)'
+                    }
+                },
+                'fields': 'userEnteredValue'
+            }
+        },
+        # Apply the checkboxes
+        {
+            'setDataValidation': {
+                'range': checkbox_range,
+                'rule': {
+                    'condition': {
+                        'type': "BOOLEAN",
+                    }
+                }
             }
         }
     ]
@@ -986,12 +1019,25 @@ def createBackup():
         None
 
 
+    # GET request for sheet index
+
+    ranges = []
+    include_grid_data = False
+
+    request = service.spreadsheets().get(spreadsheetId=spreadsheet_id, ranges=ranges, includeGridData=include_grid_data)
+    response = request.execute()
+
+
+    for i in range(len(response['sheets'])):
+        if response['sheets'][i]['properties']['sheetId'] == sheet_id:
+            sheet_index = response['sheets'][i]['properties']['index']
+
     # Duplicate request
     requests = [
         {
             'duplicateSheet': {
                 'sourceSheetId': sheet_id,
-                "insertSheetIndex": 1,
+                "insertSheetIndex": sheet_index+1,
                 "newSheetId": sheet_id+1,
                 "newSheetName": "Backup-Sheet"
             }
