@@ -13510,5 +13510,165 @@
 		"natural_stars": 1,
 		"awaken_level": 0,
 		"homunculus": "False"
+	},
+	"25101": {
+		"name": "Water Onimusha",
+		"element": "Water",
+		"archetype": "Attack",
+		"natural_stars": 4,
+		"awaken_level": 0,
+		"homunculus": "False"
+	},
+	"25111": {
+		"name": "Suiki",
+		"element": "Water",
+		"archetype": "Attack",
+		"natural_stars": 4,
+		"awaken_level": 1,
+		"homunculus": "False"
+	},
+	"25102": {
+		"name": "Fire Onimusha",
+		"element": "Fire",
+		"archetype": "Attack",
+		"natural_stars": 4,
+		"awaken_level": 0,
+		"homunculus": "False"
+	},
+	"25112": {
+		"name": "Kaki",
+		"element": "Fire",
+		"archetype": "Attack",
+		"natural_stars": 4,
+		"awaken_level": 1,
+		"homunculus": "False"
+	},
+	"25103": {
+		"name": "Wind Onimusha",
+		"element": "Wind",
+		"archetype": "HP",
+		"natural_stars": 4,
+		"awaken_level": 0,
+		"homunculus": "False"
+	},
+	"25113": {
+		"name": "Fuuki",
+		"element": "Wind",
+		"archetype": "HP",
+		"natural_stars": 4,
+		"awaken_level": 1,
+		"homunculus": "False"
+	},
+	"25104": {
+		"name": "Light Onimusha",
+		"element": "Light",
+		"archetype": "HP",
+		"natural_stars": 4,
+		"awaken_level": 0,
+		"homunculus": "False"
+	},
+	"25114": {
+		"name": "Kinki",
+		"element": "Light",
+		"archetype": "HP",
+		"natural_stars": 4,
+		"awaken_level": 1,
+		"homunculus": "False"
+	},
+	"25105": {
+		"name": "Dark Onimusha",
+		"element": "Dark",
+		"archetype": "Attack",
+		"natural_stars": 4,
+		"awaken_level": 0,
+		"homunculus": "False"
+	},
+	"25115": {
+		"name": "Ongyouki",
+		"element": "Dark",
+		"archetype": "Attack",
+		"natural_stars": 4,
+		"awaken_level": 1,
+		"homunculus": "False"
+	},
+	"25001": {
+		"name": "Water Onmyouji",
+		"element": "Water",
+		"archetype": "Support",
+		"natural_stars": 5,
+		"awaken_level": 0,
+		"homunculus": "False"
+	},
+	"25011": {
+		"name": "Shizuka",
+		"element": "Water",
+		"archetype": "Support",
+		"natural_stars": 5,
+		"awaken_level": 1,
+		"homunculus": "False"
+	},
+	"25002": {
+		"name": "Fire Onmyouji",
+		"element": "Fire",
+		"archetype": "Support",
+		"natural_stars": 5,
+		"awaken_level": 0,
+		"homunculus": "False"
+	},
+	"25012": {
+		"name": "Tomoe",
+		"element": "Fire",
+		"archetype": "Support",
+		"natural_stars": 5,
+		"awaken_level": 1,
+		"homunculus": "False"
+	},
+	"25003": {
+		"name": "Wind Onmyouji",
+		"element": "Wind",
+		"archetype": "Support",
+		"natural_stars": 5,
+		"awaken_level": 0,
+		"homunculus": "False"
+	},
+	"25013": {
+		"name": "Giou",
+		"element": "Wind",
+		"archetype": "Support",
+		"natural_stars": 5,
+		"awaken_level": 1,
+		"homunculus": "False"
+	},
+	"25004": {
+		"name": "Light Onmyouji",
+		"element": "Light",
+		"archetype": "Support",
+		"natural_stars": 5,
+		"awaken_level": 0,
+		"homunculus": "False"
+	},
+	"25014": {
+		"name": "Seimei",
+		"element": "Light",
+		"archetype": "Support",
+		"natural_stars": 5,
+		"awaken_level": 1,
+		"homunculus": "False"
+	},
+	"25005": {
+		"name": "Dark Onmyouji",
+		"element": "Dark",
+		"archetype": "Support",
+		"natural_stars": 5,
+		"awaken_level": 0,
+		"homunculus": "False"
+	},
+	"25015": {
+		"name": "Douman",
+		"element": "Dark",
+		"archetype": "Support",
+		"natural_stars": 5,
+		"awaken_level": 1,
+		"homunculus": "False"
 	}
 }
